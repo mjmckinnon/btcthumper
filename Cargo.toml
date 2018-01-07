@@ -1,0 +1,9 @@
+[package]
+authors = ["Michael McKinnon <michael@clicknames.com.au>"]
+name = "btcthumper"
+version = "0.1.0"
+
+[dependencies]
+bitcoin = "0.10.6"
+rand = "0.3"
+secp256k1 = "0.6.3"
