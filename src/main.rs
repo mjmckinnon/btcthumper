@@ -22,7 +22,7 @@ fn main() {
 	let startval: u64 = myrange.0;
 	let endval: u64 =
 		// If the second number is smaller, add to the first and make that the end
-		if myrange.1 > myrange.0 {
+		if myrange.1 <= myrange.0 {
 			myrange.0 + myrange.1
 		}
 		else {
