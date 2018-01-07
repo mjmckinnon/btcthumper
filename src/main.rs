@@ -15,12 +15,22 @@ use std::env;
 fn main() {
 	// Parse command line arguments
 	let args: Vec<String> = env::args().collect();
-	let myrange: (u32, u32) = match args.len() {
+	let myrange: (u64, u64) = match args.len() {
 		3 => { (args[1].parse().unwrap(), args[2].parse().unwrap() ) },
 		_ => panic!("Error. Usage: btcthumper <startval> <endval>")
 	};
+	let startval: u64 = myrange.0;
+	let endval: u64 =
+		// If the second number is smaller, add to the first and make that the end
+		if myrange.1 > myrange.0 {
+			myrange.0 + myrange.1
+		}
+		else {
+			// we add one so it finishes where you expect
+		    myrange.1 + 1
+		};
 	// Loop across our range and start generating
-	for n in myrange.0..(myrange.1+1) {
+	for n in startval..endval {
 		let secp = Secp256k1::new();
 		let mut hasher = Sha256::new();
 		hasher.input_str(&n.to_string()[..]);
