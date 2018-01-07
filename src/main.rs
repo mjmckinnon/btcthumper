@@ -10,9 +10,17 @@ use secp256k1::key::SecretKey;
 use bitcoin::network::constants::Network;
 use crypto::digest::Digest;
 use crypto::sha2::Sha256;
+use std::env;
 
 fn main() {
-	for n in 1..1000 {
+	// Parse command line arguments
+	let args: Vec<String> = env::args().collect();
+	let myrange: (u32, u32) = match args.len() {
+		3 => { (args[1].parse().unwrap(), args[2].parse().unwrap() ) },
+		_ => panic!("Error. Usage: btcthumper <startval> <endval>")
+	};
+	// Loop across our range and start generating
+	for n in myrange.0..(myrange.1+1) {
 		let secp = Secp256k1::new();
 		let mut hasher = Sha256::new();
 		hasher.input_str(&n.to_string()[..]);
@@ -26,5 +34,4 @@ fn main() {
 		let myaddress: Address = myprivkey.to_address(&secp).unwrap();
 		println!("{:?},s2({})", myaddress, n);		
 	}
-
 }
