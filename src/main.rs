@@ -12,20 +12,19 @@ use crypto::digest::Digest;
 use crypto::sha2::Sha256;
 
 fn main() {
-	let secp = Secp256k1::new();
-	let mut hasher = Sha256::new();
-	hasher.input_str("1972");
-	let mut newhash: [u8; 32] = [0; 32];
-	hasher.result(&mut newhash);
-	let mysecret = match SecretKey::from_slice(&secp, &newhash[0..32]) {
-		Ok(key) => { key },
-		Err(e) => { panic!("{}", e) }
-	};
-	let myprivkey = Privkey::from_key(Network::Bitcoin, mysecret, false);
-	let myaddress: Address = myprivkey.to_address(&secp).unwrap();
-
-	println!("Secret Key is {:?}", mysecret);
-	println!("Private Key is {:?}", myprivkey.secret_key());
-	println!("My Address is {:?}", myaddress);
+	for n in 1..1000 {
+		let secp = Secp256k1::new();
+		let mut hasher = Sha256::new();
+		hasher.input_str(&n.to_string()[..]);
+		let mut newhash: [u8; 32] = [0; 32];
+		hasher.result(&mut newhash);
+		let mysecret = match SecretKey::from_slice(&secp, &newhash[0..32]) {
+			Ok(key) => { key },
+			Err(e) => { panic!("{}", e) }
+		};
+		let myprivkey = Privkey::from_key(Network::Bitcoin, mysecret, false);
+		let myaddress: Address = myprivkey.to_address(&secp).unwrap();
+		println!("{:?},s2({})", myaddress, n);		
+	}
 
 }
