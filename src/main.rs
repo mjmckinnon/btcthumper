@@ -43,11 +43,11 @@ fn main() {
 		match mode {
 			1 => { // then we are just doing a number
 				   let nbytes: [u8; 8] = unsafe { transmute(n) };
-				   newhash[..8].clone_from_slice(&nbytes); },
+				   newhash[24..].clone_from_slice(&nbytes); },
 			2 => { // then we'll do a java.util.Random crack
 				   let randval = n ^ SEED;
 				   let nbytes: [u8; 8] = unsafe { transmute(randval) };
-				   newhash[..8].clone_from_slice(&nbytes); },
+				   newhash[24..].clone_from_slice(&nbytes); },
 			_ => { // then we are hasing as a string only
 				   hasher.input_str(&n.to_string()[..]);
 				   hasher.result(&mut newhash); },
